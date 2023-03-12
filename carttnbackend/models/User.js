@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema({
         minlength: 8,
     },
     profilePhoto: {
-        type: object,
+        type: Object,
         default: {
             url: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
             publicId: null,
@@ -51,10 +51,11 @@ const UserSchema = new mongoose.Schema({
         default: false,
     },
     phonenumber: {
-        type: Number,
+        type: String,
         required: true,
         trim: true,
-        maxlength: 100,
+        minlength:8,
+        maxlength: 15,
     },
 
 }, {
@@ -70,11 +71,12 @@ function validateRegisterUser(obj) {
     const schema = Joi.object({
         username: Joi.string().trim().min(3).max(100).required(),
         email: Joi.string().trim().min(3).max(100).required().email(),
-        password: Joi.string().trim().min(8).max(100).required(),
+        password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+        phonenumber: Joi.string().min(8).max(15).pattern(new RegExp('^[0-9]*$')).required(),
     })
     return schema.validate(obj)
 }
 module.exports = {
     User,
-    validateRegisterUser
+    validateRegisterUser,
 }

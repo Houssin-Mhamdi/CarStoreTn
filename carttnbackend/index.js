@@ -11,6 +11,10 @@ const app = express();
 // middlewares
 app.use(express.json())
 
+//route
+app.use("/api/auth", require("./routes/authRoute"));
+
+
 //running the server 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

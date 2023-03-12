@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler')
-const bcrypt = require('bcrypt');
-const { User, validateRegisterUser } = require('../models/User.js')
+const bcrypt = require('bcryptjs')
 
+const { User, validateRegisterUser } = require('../models/User.js')
 /**----------------------------------------------------------------
  * @desc Register New User
  * @router /api/auth/register
@@ -24,16 +24,16 @@ module.exports.registerUserCtrl = asyncHandler(async (req, res) => {
     //hash the password
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
-  
+
     // new user and save it to database
     user = new User({
         username: req.body.username,
         email: req.body.email,
-        password: hashedPassword
+        phonenumber: req.body.phonenumber,
+        password: hashedPassword,
     })
     await user.save()
-
     //send a response to client
     //201 created successfully
-    res.status(201).json({message:'you registered successfully , please log in'})
+    res.status(201).json({ message: 'you registered successfully , please log in' })
 })
