@@ -11,7 +11,7 @@ const { User, validateUpdateUser } = require('../models/User.js')
  ---------------------------------------------------------------**/
 module.exports.getAllUsersCtrl = asyncHandler(async (req, res) => {
     if (!req.user.isAdmin) {
-        return res.status(403).json({message: "not allowed, only admin"})
+        
     }
     const users = await User.find().select("-password")
     res.status(200).json(users)
