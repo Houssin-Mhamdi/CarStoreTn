@@ -92,8 +92,22 @@ function validateLoginUser(obj) {
     })
     return schema.validate(obj)
 }
+
+//validate Login user
+function validateUpdateUser(obj) {
+    const schema = Joi.object({
+        username:Joi.string().trim().min(3).max(100),
+        street:Joi.string().trim().min(3).max(100),
+        country:Joi.string().trim().min(3).max(100),
+        email: Joi.string().trim().min(3).max(100).email(),
+        password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+        phonenumber: Joi.string().min(8).max(15).pattern(new RegExp('^[0-9]*$')),
+    })
+    return schema.validate(obj)
+}
 module.exports = {
     User,
     validateRegisterUser,
-    validateLoginUser
+    validateLoginUser,
+    validateUpdateUser  
 }
