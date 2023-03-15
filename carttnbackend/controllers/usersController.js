@@ -52,7 +52,7 @@ module.exports.updateUserProfileCtrl = asyncHandler(async (req, res) => {
             password: req.body.password,
             phonenumber: req.body.phonenumber,
         }
-    },{new:true}).select('-password')
+    }, { new: true }).select('-password')
 
     res.status(200).json(updatedUser)
 })
@@ -62,7 +62,17 @@ module.exports.updateUserProfileCtrl = asyncHandler(async (req, res) => {
  * @method GET
  * @access private (only admin)
  ---------------------------------------------------------------**/
- module.exports.getUsersCountCtrl = asyncHandler(async (req, res) => {
+module.exports.getUsersCountCtrl = asyncHandler(async (req, res) => {
     const count = await User.count()
     res.status(200).json(count)
+})
+
+/**----------------------------------------------------------------
+ * @desc Profile phot Upload
+ * @route /api/users/profile/profile-photo-upload
+ * @method POST
+ * @access private (only logged in user)
+ ---------------------------------------------------------------**/
+module.exports.profilePhotoUploadCtrl = asyncHandler(async (req, res) => {
+     res.status(200).json({message:'your profile photo uploaded successfully'})
 })
