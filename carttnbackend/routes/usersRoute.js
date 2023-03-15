@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const { getAllUsersCtrl, getUserProfileCtrl, getUsersCountCtrl, updateUserProfileCtrl, profilePhotoUploadCtrl } = require('../controllers/usersController')
+const photoUpload = require('../middlewares/photoUpload')
 const validateObjectId = require('../middlewares/validateObjectId')
 const { verifyToken, verifyTokenAndAdmin, verifyTokenAndOnlyUser } = require('../middlewares/verifyToken')
 
@@ -12,7 +13,7 @@ router
     .put(validateObjectId, verifyTokenAndOnlyUser, updateUserProfileCtrl)
 
 router.route('/profile/profile-photo-upload')
-    .post(verifyToken,profilePhotoUploadCtrl)
+    .post(verifyToken, photoUpload.single('image') ,profilePhotoUploadCtrl)
 
 router.route('/count').get(verifyTokenAndAdmin, getUsersCountCtrl)
 

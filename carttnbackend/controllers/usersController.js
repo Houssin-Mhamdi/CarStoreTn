@@ -74,5 +74,8 @@ module.exports.getUsersCountCtrl = asyncHandler(async (req, res) => {
  * @access private (only logged in user)
  ---------------------------------------------------------------**/
 module.exports.profilePhotoUploadCtrl = asyncHandler(async (req, res) => {
-     res.status(200).json({message:'your profile photo uploaded successfully'})
+    if (!req.file) {
+        return res.status(400).json({ message: 'no file provided' })
+    }
+    res.status(200).json({ message: 'your profile photo uploaded successfully' })
 })
