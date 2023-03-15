@@ -1,4 +1,4 @@
-const cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary').v2;
 
 // Configuration 
 cloudinary.config({
@@ -19,3 +19,16 @@ const cloudinaryUploadImage = async (fileToUpload) => {
         throw new Error("Internal Server Error (cloudinary)")
     }
 }
+
+//cloudinary upload image 
+const cloudinaryRemoveImage = async (imagePublicId) => {
+    try {
+        const result = await cloudinary.uploader.destroy(imagePublicId)
+        return result
+    } catch (error) {
+        console.log(error);
+        throw new Error("Internal Server Error (cloudinary)")
+    }
+}
+
+module.exports = { cloudinaryUploadImage, cloudinaryRemoveImage }

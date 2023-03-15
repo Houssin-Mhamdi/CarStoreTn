@@ -1,6 +1,8 @@
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcryptjs')
-
+const path = require('path')
+const fs = require('fs')
+const { cloudinaryUploadImage, cloudinaryRemoveImage } = require('../utils/cloudinary.js')
 const { User, validateUpdateUser } = require('../models/User.js')
 
 /**----------------------------------------------------------------
@@ -74,20 +76,38 @@ module.exports.getUsersCountCtrl = asyncHandler(async (req, res) => {
  * @access private (only logged in user)
  ---------------------------------------------------------------**/
 module.exports.profilePhotoUploadCtrl = asyncHandler(async (req, res) => {
-    console.log(req.file);
     //1. Validation
     if (!req.file) {
         return res.status(400).json({ message: 'no file provided' })
     }
 
     // 2. Get the path to the image
-    // 3. Upload to cloudinary
-    // 4. Get the user from DB
-    // 5. Delete the old profile photo if exist
-    // 6. Change the profilePhoto field in the DB
+    const imagePath = path.join(__dirname, `../images/${req.file.filename}`)
 
+    // 3. Upload to cloudinary
+    const result = await cloudinaryUploadImage(imagePath)
+    console.log(result);
+    // 4. Get the user from DB
+    const user = await User.findById(req.user.id)
+    // 5. Delete the old profile photo if exist
+    if (user.profilePhoto.publicId !== null) {
+        await cloudinaryRemoveImage(user.profilePhoto.publicId)
+    }
+    // 6. Change the profilePhoto field in the DB
+    user.profilePhoto = {
+        url: result.secure_url,
+        publicId: result.public_id
+    }
+    await user.save()
     //7.  Send response to client
-    res.status(200).json({ message: 'your profile photo uploaded successfully' })
-    
+    res.status(200).json({
+        message: 'your profile photo uploaded successfully',
+        profilePhoto: {
+            url: result.secure_url,
+            publicId: result.public_id
+        }
+    })
+
     //8.Remove image from the server 
+    fs.unlinkSync(imagePath)
 })
