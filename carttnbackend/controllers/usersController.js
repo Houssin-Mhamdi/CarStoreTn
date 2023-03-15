@@ -74,8 +74,20 @@ module.exports.getUsersCountCtrl = asyncHandler(async (req, res) => {
  * @access private (only logged in user)
  ---------------------------------------------------------------**/
 module.exports.profilePhotoUploadCtrl = asyncHandler(async (req, res) => {
+    console.log(req.file);
+    //1. Validation
     if (!req.file) {
         return res.status(400).json({ message: 'no file provided' })
     }
+
+    // 2. Get the path to the image
+    // 3. Upload to cloudinary
+    // 4. Get the user from DB
+    // 5. Delete the old profile photo if exist
+    // 6. Change the profilePhoto field in the DB
+
+    //7.  Send response to client
     res.status(200).json({ message: 'your profile photo uploaded successfully' })
+    
+    //8.Remove image from the server 
 })
