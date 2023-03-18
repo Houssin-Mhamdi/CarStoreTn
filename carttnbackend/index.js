@@ -15,6 +15,8 @@ app.use(express.json())
 app.use("/api/auth", require("./routes/authRoute"));
 app.use("/api/users", require("./routes/usersRoute"));
 app.use("/api/carposts", require("./routes/carPostRoute"));
+app.use("/api/car", require("./routes/modelCarRoute"));
+app.use("/api", require("./routes/vehicleRoute"));
 
 
 //running the server 
