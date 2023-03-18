@@ -37,7 +37,7 @@ const CarSchema = new mongoose.Schema({
         enum: ['Gasoline', 'Diesel', 'Electric'],
         required: true
     },
-    User: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
