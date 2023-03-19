@@ -62,10 +62,11 @@ module.exports.getAllCarPostCrtl = asyncHandler(async (req, res) => {
         carposts = await CarPost.find()
             .skip((pageNumber - 1) * POST_PER_PAGE)
             .limit(POST_PER_PAGE)
+            .sort({ createdAt: -1 })
     } else if (category) {
-        carposts = await CarPost.find({ category })
+        carposts = await CarPost.find({ category }).sort({ createdAt: -1 })
     } else {
-        carposts = await CarPost.find()
+        carposts = await CarPost.find().sort({ createdAt: -1 })
     }
     res.status(200).json(carposts)
 }) 
