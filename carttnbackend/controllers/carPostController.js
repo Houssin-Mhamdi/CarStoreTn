@@ -54,4 +54,18 @@ module.exports.createCarPostCrtl = asyncHandler(async (req, res) => {
  * @method  GET
  * @access  public
  ------------------------------------------------*/
- 
+module.exports.getAllCarPostCrtl = asyncHandler(async (req, res) => {
+    const POST_PER_PAGE = 3
+    const { pageNumber, category } = req.query
+    let carposts
+    if (pageNumber) {
+        carposts = await CarPost.find()
+            .skip((pageNumber - 1) * POST_PER_PAGE)
+            .limit(POST_PER_PAGE)
+    } else if (category) {
+        carposts = await CarPost.find({ category })
+    } else {
+        carposts = await CarPost.find()
+    }
+    res.status(200).json(carposts)
+}) 

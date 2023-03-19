@@ -1,11 +1,12 @@
 const router = require('express').Router();
-const { createCarPostCrtl } = require('../controllers/carPostController');
+const { createCarPostCrtl , getAllCarPostCrtl} = require('../controllers/carPostController');
 const photoUpload = require('../middlewares/photoUpload');
 const { verifyToken } = require('../middlewares/verifyToken');
 
 
- 
+
 router.route('/')
-      .post(verifyToken,photoUpload.single('image'),createCarPostCrtl)
+      .post(verifyToken, photoUpload.single('image'), createCarPostCrtl)
+      .get(getAllCarPostCrtl)
 
 module.exports = router;
