@@ -63,10 +63,45 @@ module.exports.getAllCarPostCrtl = asyncHandler(async (req, res) => {
             .skip((pageNumber - 1) * POST_PER_PAGE)
             .limit(POST_PER_PAGE)
             .sort({ createdAt: -1 })
+            .populate('user', ['-password'])
     } else if (category) {
-        carposts = await CarPost.find({ category }).sort({ createdAt: -1 })
+        carposts = await CarPost.find({ category })
+            .sort({ createdAt: -1 })
+            .populate('user', ['-password'])
     } else {
-        carposts = await CarPost.find().sort({ createdAt: -1 })
+        carposts = await CarPost.find()
+            .sort({ createdAt: -1 })
+            .populate('user', ['-password'])
     }
     res.status(200).json(carposts)
 }) 
+
+/**-----------------------------------------------
+ * @desc    Get Single Post
+ * @route   /api/posts/:id
+ * @method  GET
+ * @access  public
+ ------------------------------------------------*/
+
+ module.exports.getSingleCarPostCtrl = asyncHandler(async (req, res) => {
+    const carpost = await CarPost.findById(req.params.id)
+    .populate("user", ["-password"])
+    
+    
+    if (!carpost) {
+      return res.status(404).json({ message: "post not found" });
+    }
+  
+    res.status(200).json(carpost);
+  });
+  
+  /**-----------------------------------------------
+   * @desc    Get Posts Count
+   * @route   /api/posts/count
+   * @method  GET
+   * @access  public
+   ------------------------------------------------*/
+  module.exports.getCarPostCountCtrl = asyncHandler(async (req, res) => {
+    const count = await CarPost.count();
+    res.status(200).json(count);
+  });
