@@ -12,7 +12,7 @@ const { CarPost, validateCreateCar } = require('../models/CarPost.js')
  * @access private (only logedin users)
  ---------------------------------------------------------------**/
 
-module.exports = createCarPostCrtl = asyncHandler(async (req, res) => {
+module.exports.createCarPostCrtl = asyncHandler(async (req, res) => {
     //1.validation for images
     if (!req.file) {
         return res.status(400).json({ message: 'no image provided' })
@@ -48,3 +48,10 @@ module.exports = createCarPostCrtl = asyncHandler(async (req, res) => {
     //6.remove image from the server
     fs.unlinkSync(imagePath)
 })
+/**-----------------------------------------------
+ * @desc    Get All Posts
+ * @route   /api/posts
+ * @method  GET
+ * @access  public
+ ------------------------------------------------*/
+ 
